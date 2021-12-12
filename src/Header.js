@@ -1,50 +1,54 @@
 import {useEffect, useState} from 'react';
-import {getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import firebase from 'firebase';
+import {auth, storage,db} from './firebase.js';
 
 function Header(props){
-    
-
-    useEffect(()=>{
-        
-    }, [])
-
-    function criarConta(e){
-        e.preventDefault();
-        let email = document.getElementById('email-cadastro').value;
-        let username = document.getElementById('username-cadastro').value;
-        let senha = document.getElementById('senha-cadastro').value;
-        const auth = getAuth();
-
-        createUserWithEmailAndPassword(auth, email, senha).then((authUser)=>{
-            authUser.user.updateProfile({
-                displayName:username
-            });
-            alert('Conta criada com sucesso!');
-            let modal = document.querySelector('.modalCriarConta');
-
-            modal.style.display = "none";
-        }).catch((error)=>{
-            alert(error.message);
-        });
-    }
 
 
-    function abrirModalCriarConta(e){
-        e.preventDefault();
+useEffect(()=>{
+
+}, [])
+
+function criarConta(e){
+e.preventDefault();
+let email = document.getElementById('email-cadastro').value;
+let username = document.getElementById('username-cadastro').value;
+let senha = document.getElementById('senha-cadastro').value;
 
 
-        let modal = document.querySelector('.modalCriarConta');
 
-        modal.style.display = "block";
+auth.createUserWithEmailAndPassword(email,senha)
+.then((authUser)=>{
+authUser.user.updateProfile({
+displayName:username
+})
+alert('Conta criada com sucesso!');
+let modal = document.querySelector('.modalCriarConta');
+
+modal.style.display = "none";
+}).catch((error)=>{
+alert(error.message);
+});
+}
 
 
-    }
 
-    function fecharModalCriar(){
-        let modal = document.querySelector('.modalCriarConta');
+function abrirModalCriarConta(e){
+e.preventDefault();
 
-        modal.style.display = "none";
-    }
+
+let modal = document.querySelector('.modalCriarConta');
+
+modal.style.display = "block";
+
+
+}
+
+function fecharModalCriar(){
+let modal = document.querySelector('.modalCriarConta');
+
+modal.style.display = "none";
+}
 
 
     return(
